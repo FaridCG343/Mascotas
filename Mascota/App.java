@@ -4,7 +4,6 @@
  */
 package Mascota;
 
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -20,7 +19,7 @@ public class App {
         String opc;
         do {
             try {
-                opc = JOptionPane.showInputDialog(null, "Bienvenido =D\n¿Qué desea hacer?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Alta", "Baja", "Imprimir mascotas", "Salir"}, "Alta").toString();
+                opc = JOptionPane.showInputDialog(null, "Bienvenido =D\n¿Qué desea hacer?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Alta", "Adoptar", "Imprimir mascotas", "Salir"}, "Alta").toString();
             } catch (Exception error) {
                 opc = "Salir";
             }
@@ -28,7 +27,7 @@ public class App {
                 case "Alta":
                     altas();
                     break;
-                case "Baja":
+                case "Adoptar":
                     bajas();
                     break;
                 case "Imprimir mascotas":
@@ -97,26 +96,36 @@ public class App {
     }//Fin altas()
 
     public static void bajas() {
-        int lugar = 1, confirmar;
-        boolean salir = false;
-        imprimir();
-        do {
-            try {
-                lugar = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el lugar a dar de baja"));
-            } catch (Exception error) {
-                salir = true;
-            }//fin try cancelar
-            if (lugar <= 0 || lugar > arrayGen.size()) {
-                JOptionPane.showMessageDialog(null, "Ingresa un lugar valido");
-            }//fin if aviso
-        } while ((lugar <= 0 || lugar > arrayGen.size()) && salir == false);//fin do while validar lugar
-        if (salir == false) {
-            confirmar = JOptionPane.showConfirmDialog(null, "Seguro que quieres dar de baja a:\n" + arrayGen.get(lugar - 1), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (confirmar == 0) {
-                arrayGen.remove(lugar - 1);
-                imprimir();
-            }//fin if confirmar
-        }//fin if verificar
+        int lugar=0, confirmar;
+        String opc;
+        try {
+            opc = JOptionPane.showInputDialog(null, "¿Qúe tipo de mascota quiere adoptar?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Perro", "Gato"}, "Perro").toString();
+        } catch (Exception error) {
+            opc = "";
+        }//fin try cancelar
+        if(!opc.equals("")){
+            if(opc.equals("Perro")){
+                for(int i=0;i<arrayGen.size();i++){
+                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Perros")){
+                        lugar=i;
+                        i=arrayGen.size();
+                    }//fin if obtener primer perro
+                }//fin for loop 
+            }//fin if elije perro
+            if(opc.equals("Gato")){
+                for(int i=0;i<arrayGen.size();i++){
+                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Gatos")){
+                        lugar=i;
+                        i=arrayGen.size();
+                    }//fin if obtener primer gato
+                }//fin for loop
+            }//fin if elije gato
+            confirmar=JOptionPane.showConfirmDialog(null, "Estas a punto de adoptar a \n"+arrayGen.get(lugar), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(confirmar==0){
+                JOptionPane.showMessageDialog(null, "Felicidades adoptaste a \n"+arrayGen.get(lugar));
+                arrayGen.remove(lugar);
+            }
+        }//fin si le da cancelar 
     }//fin bajas
 
     public static void imprimir() {
