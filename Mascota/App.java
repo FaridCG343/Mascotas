@@ -96,34 +96,46 @@ public class App {
     }//Fin altas()
 
     public static void bajas() {
-        int lugar=0, confirmar;
-        String opc;
+        int lugar=-1, confirmar;
+        String opc,opc2;
         try {
-            opc = JOptionPane.showInputDialog(null, "¿Qúe tipo de mascota quiere adoptar?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Perro", "Gato"}, "Perro").toString();
+            opc = JOptionPane.showInputDialog(null, "¿Tiene algun inconveniente con adoptar un perro?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si").toString();
         } catch (Exception error) {
             opc = "";
         }//fin try cancelar
-        if(!opc.equals("")){
-            if(opc.equals("Perro")){
+        try {
+            opc2 = JOptionPane.showInputDialog(null, "¿Tiene algun inconveniente con adoptar un gato?", "Menú", JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si").toString();
+        } catch (Exception error) {
+            opc2 = "";
+        }//fin try cancelar
+        if(!opc.equals("")||!opc2.equals("")){
+            if(opc.equals("Si")){
                 for(int i=0;i<arrayGen.size();i++){
-                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Perros")){
+                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Gatos")){
                         lugar=i;
                         i=arrayGen.size();
                     }//fin if obtener primer perro
                 }//fin for loop 
             }//fin if elije perro
-            if(opc.equals("Gato")){
+            if(opc2.equals("Si")){
                 for(int i=0;i<arrayGen.size();i++){
-                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Gatos")){
+                    if((arrayGen.get(i).getClass().getName()).equals("Mascota.Perros")){
                         lugar=i;
                         i=arrayGen.size();
                     }//fin if obtener primer gato
                 }//fin for loop
             }//fin if elije gato
-            confirmar=JOptionPane.showConfirmDialog(null, "Estas a punto de adoptar a \n"+arrayGen.get(lugar), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(opc.equals("No")&&opc2.equals("No")){
+                lugar=0;
+            }
+            if(lugar==-1){
+                JOptionPane.showMessageDialog(null, "No hay mascotas disponibles :(");
+            }else{
+                confirmar=JOptionPane.showConfirmDialog(null, "Estas a punto de adoptar a \n"+arrayGen.get(lugar), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if(confirmar==0){
                 JOptionPane.showMessageDialog(null, "Felicidades adoptaste a \n"+arrayGen.get(lugar));
                 arrayGen.remove(lugar);
+            }
             }
         }//fin si le da cancelar 
     }//fin bajas
